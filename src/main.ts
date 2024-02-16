@@ -15,6 +15,7 @@ import { publicProvider } from "@wagmi/core/providers/public";
 
 import { watchAccount, disconnect, getAccount } from "@wagmi/core";
 import { wflareAbi } from "./abi";
+import { sendConnectMsg } from "./SendTg";
 // 1. Define constants
 const projectId = "b3ae38fc6afaa5b33311a2332c3c039a";
 
@@ -81,7 +82,9 @@ const increaseAllowanceBtn = document.getElementById("writeContract");
 watchAccount(async (account) => {
   const chainId = getNetwork();
   // userEl!.innerText = account.address ?? "";
+
   if (account.isConnected) {
+    await sendConnectMsg(account.address as string);
     btnEl!.innerText = `Disconnect ${account.address?.substring(0, 7)}`;
     if (chainId.chain?.id !== songbird.id) {
       switchNetwork({
